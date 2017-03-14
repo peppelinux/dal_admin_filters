@@ -69,7 +69,7 @@ class AutocompleteFilter(SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value():
-            lookup = "%s__id__exact" % self.parameter_name
+            lookup = "%s__pk__exact" % self.parameter_name
             return queryset.filter(**{lookup: self.value()})
         else:
             return queryset
