@@ -10,6 +10,7 @@
 
 // pduey: add a variable/value pair to the current query string and return updated href
 
+
 function search_replace(name, value) {
   var new_search_hash = search_to_hash();
   new_search_hash[decodeURIComponent(name)] = [];
@@ -17,6 +18,7 @@ function search_replace(name, value) {
   return hash_to_search(new_search_hash);
 }
 
+/*
 function search_add(name, value) {
   var new_search_hash = search_to_hash();
   if ( ! (decodeURIComponent(name) in new_search_hash)) {
@@ -37,23 +39,33 @@ function search_remove(name, value) {
   }
   return hash_to_search(new_search_hash);
 }
-
+*/
 function search_to_hash() {
   var h={};
   if (window.location.search == undefined || window.location.search.length < 1) { return h;}
   q = window.location.search.slice(1).split('&');
+  //~ alert(q)
   for (var i = 0; i < q.length; i++) {
+    
+    // prevents undfined "?e=1" redirects
+    if (q[i].length < 1) { continue; }
+  
     var key_val = q[i].split('=');
     // replace '+' (alt space) char explicitly since decode does not
-    var hkey = decodeURIComponent(key_val[0]).replace(/\+/g,' ');
-    var hval = decodeURIComponent(key_val[1]).replace(/\+/g,' ');
+    var hkey = decodeURIComponent(key_val[0]); //.replace(/\+/g,' ');
+    var hval = decodeURIComponent(key_val[1]); //.replace(/\+/g,' ');
+    //~ alert(key_val)
+    //~ alert((hval, hkey))
+    
     if (h[hkey] == undefined) {
       h[hkey] = [];
+      
     }
     h[hkey].push(hval);
   }
   return h;
 }
+
 
 function hash_to_search(h) {
   var search = String("?");
@@ -65,3 +77,4 @@ function hash_to_search(h) {
   }
   return search;
 }
+
